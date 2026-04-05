@@ -1,3 +1,9 @@
+''' O arquivo enviar_relatorio.py é responsável por pegar o relatório com os dados gerados e enviar
+para o responsável. Nesse código foi utilizado o smtplib para fazer a conexão no e-mail, e o
+email.mime foi utilizado para fazer o envio do e-mail.
+'''
+
+# Imports necessários para execução
 import smtplib
 import os
 from email.mime.text import MIMEText
@@ -6,9 +12,10 @@ from email.mime.base import MIMEBase
 from email import encoders
 from dotenv import load_dotenv
 
+# Carrega as variáveis de ambiente
 load_dotenv()
 
-# ─── CONFIGURAÇÃO ─────────────────────────────
+# Configuração do e-mail, senha, destinatário, assunto e o relatório
 GMAIL_USER = os.getenv('GMAIL_USER')
 GMAIL_PWD = os.getenv('GMAIL_PWD')
 
@@ -17,7 +24,7 @@ ASSUNTO = "Relatório Automatizado de Pedidos"
 
 CAMINHO_PDF = "relatorio_final.pdf"
 
-# ─── CORPO DO EMAIL ──────────────────────────
+# Definição do corpo do e-mail - mensagem que aparecerá no e-mail
 CORPO_HTML = """
 <html>
   <body>
@@ -38,7 +45,7 @@ CORPO_HTML = """
 </html>
 """
 
-# ─── CRIAR MENSAGEM ──────────────────────────
+# Função para criar a mensagem
 def criar_msg():
     msg = MIMEMultipart()
     msg['Subject'] = ASSUNTO
@@ -49,7 +56,7 @@ def criar_msg():
 
     return msg
 
-# ─── ANEXAR PDF ──────────────────────────────
+# Função para carregar o arquivo que será enviado, no caso o relatorio_final
 def carregar_anexo(msg, path):
     if not os.path.exists(path):
         print(f"Arquivo não encontrado: {path}")
@@ -70,7 +77,7 @@ def carregar_anexo(msg, path):
     msg.attach(parte)
     print(f"Anexo adicionado: {nome_arquivo}")
 
-# ─── ENVIAR EMAIL ────────────────────────────
+# Função para enviar o e-mail, preenche os dados e envia
 def enviar_email(msg):
     print("Conectando ao Gmail...")
 
@@ -86,8 +93,9 @@ def enviar_email(msg):
 
     print("Email enviado com sucesso!")
 
-# ─── MAIN ────────────────────────────────────
+# Executando e enviando o e-mail com o dado
 def main():
+    # Caso o e-mail ou a senha sejam inconsistente
     if not GMAIL_USER or not GMAIL_PWD:
         print("Erro: Verifique o .env")
         return

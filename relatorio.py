@@ -1,3 +1,9 @@
+''' O arquivo relatorio.py é responsável por reunir e limpar os dados e gerar o relatório.
+Utilizando as bibliotecas pandas, matplotlib para ler os dados e gerar os gráficos é possível 
+obter o relatório em pdf.
+'''
+
+# Imports necessários para execução
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -5,7 +11,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet
 
 
-# ─── 1. LEITURA DOS DADOS ─────────────────────────────
+# Realiza a leitura dos dados
 
 df_clientes = pd.read_excel("Cliente.xlsx")
 df_pedidos = pd.read_excel("Pedidos.xlsx")
@@ -13,14 +19,14 @@ df_produtos = pd.read_excel("Produtos.xlsx")
 
 print("Dados carregados com sucesso!")
 
-# ─── 2. TRATAMENTO E JUNÇÃO ──────────────────────────
+# Realiza o tratamento dos dados das diferentes planilhas
 
 df = df_pedidos.merge(df_clientes, on="id_cliente")
 df = df.merge(df_produtos, on="id_produto")
 
 print("Dados integrados!")
 
-# ─── 3. MÉTRICAS ─────────────────────────────────────
+# Métricas que irão compor o relatório
 
 total_pedidos = len(df)
 faturamento_total = df["valor_total"].sum()
@@ -29,9 +35,9 @@ pedidos_por_status = df["status"].value_counts()
 
 top_clientes = df.groupby("nome")["valor_total"].sum().sort_values(ascending=False).head(5)
 
-# ─── 4. GRÁFICOS ─────────────────────────────────────
+# Gera gráficos utilizando o Matplotlib
 
-# Gráfico 1: pedidos por status
+# Gráfico 1: pedidos por status - Cada pedido possui um status e ele reuni esses dados
 plt.figure()
 pedidos_por_status.plot(kind="bar")
 plt.title("Pedidos por Status")
@@ -40,7 +46,7 @@ plt.tight_layout()
 plt.savefig("grafico_status.png")
 plt.close()
 
-# Gráfico 2: top clientes
+# Gráfico 2: top clientes - clientes que mais gastaram na loja
 plt.figure()
 top_clientes.plot(kind="bar")
 plt.title("Top 5 Clientes por Valor")
@@ -51,13 +57,14 @@ plt.close()
 
 print("Gráficos gerados!")
 
-# ─── 5. GERAR PDF ────────────────────────────────────
+# Gera o relatório em PDF com os dados gerados anteriormente
 
 doc = SimpleDocTemplate("relatorio_final.pdf")
 styles = getSampleStyleSheet()
 
 conteudo = []
 
+#Organização do PDF
 # Título
 conteudo.append(Paragraph("Relatório de Pedidos", styles["Title"]))
 conteudo.append(Spacer(1, 10))
@@ -88,7 +95,7 @@ conteudo.append(Spacer(1, 20))
 conteudo.append(Paragraph("Top Clientes:", styles["Heading2"]))
 conteudo.append(Image("grafico_clientes.png", width=400, height=250))
 
-# Gera PDF
+# PDF Gerado
 doc.build(conteudo)
 
 print("Relatório PDF gerado com sucesso!")

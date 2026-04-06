@@ -1,8 +1,6 @@
 playwright
 pandas
-numpy
 openpyxl
 matplotlib
-seaborn
 reportlab
 python-dotenv

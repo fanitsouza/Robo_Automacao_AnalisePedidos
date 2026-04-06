@@ -1,0 +1,41 @@
+@startuml
+title Sistema Automatizado de Processamento e Análise de Pedidos
+
+actor Ator
+participant "Robô RPA\n(Playwright)" as RPA
+participant "Google Drive" as Drive
+participant "Módulo de Processamento" as Processamento
+participant "Gerador de Relatórios" as Relatorio
+participant "Serviço de E-mail" as Email
+
+== Início do Processo ==
+Ator -> RPA : Inicia execução do robô
+
+== Acesso e Download ==
+RPA -> Drive : Acessa Google Drive e realiza login
+Drive --> RPA : Login realizado
+
+RPA -> Drive : Localiza planilhas e faz download
+Drive --> RPA : Arquivos baixados
+
+== Processamento de Dados ==
+RPA -> Processamento : Envia arquivos baixados
+Processamento -> Processamento : Leitura dos dados
+Processamento -> Processamento : Tratamento e limpeza
+Processamento -> Processamento : Integração dos dados
+
+== Geração de Relatórios ==
+Processamento -> Relatorio : Dados processados
+Relatorio -> Relatorio : Geração de métricas
+Relatorio -> Relatorio : Criação de gráficos
+Relatorio -> Relatorio : Geração do PDF
+Relatorio --> RPA : Relatório final
+
+== Envio por E-mail ==
+RPA -> Email : Conecta ao servidor SMTP e envia e-mail
+Email --> RPA : Confirmação de envio
+
+== Finalização ==
+RPA -> Usuario : Processo finalizado com sucesso
+
+@enduml

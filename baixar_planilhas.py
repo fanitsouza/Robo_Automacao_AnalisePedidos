@@ -7,11 +7,6 @@ acessa o drive e faz o download das planilhas definidas na função.
 from playwright.sync_api import sync_playwright
 import time
 import re
-import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
-from reportlab.lib.styles import getSampleStyleSheet
 from dotenv import load_dotenv
 import os
 

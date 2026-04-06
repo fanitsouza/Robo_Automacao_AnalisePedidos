@@ -1,0 +1,54 @@
+@startuml
+title Diagrama de Atividades - Sistema Automatizado de Processamento de Pedidos
+
+|Ator|
+start
+:Inicia execução do robô;
+
+|Robô RPA|
+:Abre navegador;
+:Realiza login;
+:Acessa Google Drive;
+
+
+|Google Drive|
+:Valida credenciais;
+
+|Robô RPA|
+if (Login bem-sucedido?) then (Sim)
+  :Localiza planilhas;
+  :Baixa arquivos;
+else (Não)
+  :Encerrar processo;
+  stop
+endif
+
+|Processamento|
+:Ler arquivos Excel;
+:Tratar e limpar dados;
+:Integrar dados;
+
+|Geração de Relatório|
+:Calcular métricas;
+:Gerar gráficos;
+:Criar relatório em PDF;
+
+|Robô RPA|
+:Preparar envio de e-mail;
+
+|Serviço de E-mail|
+:Conectar ao servidor;
+:Enviar e-mail com anexo;
+
+|Robô RPA|
+if (Envio realizado?) then (Sim)
+  :Registrar sucesso;
+else (Não)
+  :Registrar falha;
+endif
+
+|Usuário|
+:Recebe relatório por e-mail;
+
+stop
+@enduml
